@@ -1,0 +1,32 @@
+{
+  "name": "commission-vehicle-catalog",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "assets:dummy": "node scripts/create-dummy-assets.mjs",
+    "sync:vehicles": "node scripts/sync-vehicle-catalog.mjs",
+    "validate:vehicles": "node scripts/validate-vehicle-catalog.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "prebuild": "npm run assets:dummy && npm run sync:vehicles && npm run validate:vehicles && npm run validate:content",
+    "build": "vue-tsc --noEmit && vite build && node scripts/create-spa-fallback.mjs",
+    "dev": "vite",
+    "preview": "vite preview",
+    "git:setup": "node scripts/git-setup.mjs",
+    "git:status": "node scripts/git-status.mjs",
+    "git:update": "node scripts/git-update.mjs",
+    "git:publish": "node scripts/git-update.mjs",
+    "setup:sheet-deps": "npm install googleapis@^144.0.0 --no-save --no-audit --fund=false --package-lock=false"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vite": "^6.3.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vue-tsc": "^2.2.10"
+  }
+}
