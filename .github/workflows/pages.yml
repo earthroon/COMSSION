@@ -25,20 +25,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Show repository files
+        run: |
+          pwd
+          ls -la
+          echo "---- package.json ----"
+          cat package.json
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      - name: Clean stale install state
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Debug installed binaries
+      - name: Verify installed binaries
         run: |
+          echo "---- node/npm ----"
           node -v
           npm -v
-          ls node_modules/.bin || true
-          npm list vite vue vue-router zod || true
+          echo "---- node_modules/.bin ----"
+          ls -la node_modules/.bin
+          echo "---- vite location ----"
+          test -f node_modules/.bin/vite
+          echo "vite exists"
 
       - name: Build
         run: npm run build
