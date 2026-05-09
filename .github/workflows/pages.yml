@@ -29,10 +29,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm install --no-audit --no-fund
+
+      - name: Debug installed binaries
+        run: |
+          node -v
+          npm -v
+          ls node_modules/.bin || true
+          npm list vite vue vue-router zod || true
 
       - name: Build
         run: npm run build
