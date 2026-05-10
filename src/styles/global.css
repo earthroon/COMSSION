@@ -328,3 +328,50 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+/* Accessibility-forward typography pass for KABANHADA catalog.
+   The visual tone stays clean and modern, but key text now has stronger scale,
+   contrast, and hit-area clarity for older visitors. */
+:root {
+  --color-text-muted: #46566e;
+}
+
+body {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.catalog-page--front {
+  padding-top: clamp(26px, 4vw, 46px);
+}
+
+.catalog-page__hero--front {
+  max-width: 940px;
+  margin-bottom: 30px;
+}
+
+.catalog-page__hero--front h1 {
+  font-size: clamp(2.35rem, 4.6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+}
+
+.catalog-page__hero--front p:last-child {
+  max-width: 780px;
+  color: #33465f;
+  font-size: clamp(1.08rem, 1.45vw, 1.22rem);
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+.eyebrow,
+h2,
+h3,
+.button-link,
+.site-header__brand,
+.site-header__link,
+.site-footer a {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}

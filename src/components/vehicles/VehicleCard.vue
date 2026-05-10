@@ -7,20 +7,21 @@
   >
     <div class="vehicle-card__media">
       <img :src="withBaseUrl(vehicle.thumbnail)" :alt="`${vehicle.title} 대표 이미지`" loading="lazy" />
-      <span v-if="!simple" class="vehicle-status" :data-status="vehicle.status">{{ statusLabel }}</span>
+      <span class="vehicle-status" :data-status="vehicle.status">{{ statusLabel }}</span>
     </div>
 
     <div class="vehicle-card__body">
       <h3>{{ vehicle.title }}</h3>
-      <p class="vehicle-card__meta">
-        {{ vehicle.profile.vehicleType }} · {{ vehicle.profile.year }}년식 ·
-        {{ vehicle.profile.mileageKm.toLocaleString() }}km
-      </p>
-      <p>{{ vehicle.profile.shortDescription }}</p>
+      <ul class="vehicle-card__facts" aria-label="주요 차량 정보">
+        <li>{{ vehicle.profile.vehicleType }}</li>
+        <li>{{ vehicle.profile.year }}년식</li>
+        <li>{{ vehicle.profile.mileageKm.toLocaleString() }}km</li>
+      </ul>
+      <p class="vehicle-card__summary">{{ vehicle.profile.shortDescription }}</p>
     </div>
 
     <div v-if="simple" class="vehicle-card__simple-footer">
-      <span>상세 정보 보기</span>
+      <span>사진·영상·상세 정보 보기</span>
       <span aria-hidden="true">→</span>
     </div>
 
