@@ -222,7 +222,7 @@ p {
 
 .home-page--kabanhada .home-hero__copy h1 {
   font-size: clamp(1.87rem, 5.1vw, 4.08rem);
-  line-height: 1.5;
+  line-height: 1.2;
   letter-spacing: -0.035em;
   word-break: keep-all;
 }
