@@ -1006,3 +1006,164 @@
     flex-basis: 91%;
   }
 }
+
+/* Mobile detail gallery v2: button-based image switcher, not horizontal scroll. */
+.vehicle-gallery__mobile-viewer,
+.vehicle-gallery__tabs {
+  display: none;
+}
+
+.vehicle-gallery__mobile-frame {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .vehicle-gallery__mobile-hint {
+    display: block;
+    max-width: 150px;
+    text-align: right;
+  }
+
+  .vehicle-gallery__mobile-viewer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vehicle-gallery__mobile-frame {
+    overflow: hidden;
+    border: 1px solid #b8d4f7;
+    border-radius: 22px;
+    background: #eef6ff;
+    box-shadow: 0 18px 38px rgba(30, 96, 180, 0.14);
+  }
+
+  .vehicle-gallery__mobile-frame img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .vehicle-gallery__mobile-caption {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 14px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #0e2747;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+
+  .vehicle-gallery__mobile-caption span {
+    color: var(--color-primary);
+    font-weight: 800;
+  }
+
+  .vehicle-gallery__mobile-caption strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .vehicle-gallery__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 64px;
+    border: 1px solid #b8d4f7;
+    border-radius: 18px;
+    background: #ffffff;
+    color: var(--color-primary);
+    box-shadow: 0 14px 30px rgba(30, 96, 180, 0.13);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .vehicle-gallery__nav span {
+    display: block;
+    transform: translateY(-2px);
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .vehicle-gallery__nav:active {
+    transform: translateY(1px);
+  }
+
+  .vehicle-gallery__nav:disabled {
+    opacity: 0.38;
+    cursor: default;
+  }
+
+  .vehicle-gallery__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .vehicle-gallery__tab {
+    min-width: 42px;
+    height: 38px;
+    border: 1px solid #c8dcf7;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #27466c;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .vehicle-gallery__tab--active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(29, 111, 222, 0.22);
+  }
+
+  .vehicle-gallery__grid {
+    display: none;
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .vehicle-gallery__mobile-viewer {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 6px;
+  }
+
+  .vehicle-gallery__nav {
+    width: 42px;
+    height: 58px;
+    border-radius: 16px;
+  }
+
+  .vehicle-gallery__nav span {
+    font-size: 2.1rem;
+  }
+
+  .vehicle-gallery__mobile-caption {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .vehicle-gallery__mobile-caption strong {
+    white-space: normal;
+  }
+}
