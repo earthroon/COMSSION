@@ -1,6 +1,6 @@
 <template>
   <header class="site-header">
-    <RouterLink class="site-header__brand" to="/" aria-label="카반하다 홈으로 이동">
+    <RouterLink class="site-header__brand" to="/" aria-label="카반하다 판매 차량 목록으로 이동">
       <span class="site-header__mark site-header__mark--logo">
         <img :src="logoSrc" alt="" aria-hidden="true" />
       </span>

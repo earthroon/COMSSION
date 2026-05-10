@@ -1,7 +1,7 @@
 <template>
   <main class="vehicle-detail">
     <RouterLink class="vehicle-detail__back" :to="{ name: 'vehicle-catalog' }">
-      차량 목록으로 돌아가기
+      판매 차량 목록으로 돌아가기
     </RouterLink>
 
     <section class="vehicle-detail__hero">

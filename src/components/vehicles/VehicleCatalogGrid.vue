@@ -1,12 +1,15 @@
 <template>
-  <section class="vehicle-catalog" aria-labelledby="vehicle-catalog-title">
-    <div class="vehicle-catalog__toolbar">
+  <section class="vehicle-catalog" :class="{ 'vehicle-catalog--simple': simplified }" aria-labelledby="vehicle-catalog-title">
+    <div class="vehicle-catalog__toolbar" :class="{ 'vehicle-catalog__toolbar--simple': simplified }">
       <div>
-        <p class="eyebrow">차량 보기</p>
-        <h2 id="vehicle-catalog-title">등록 차량</h2>
+        <p class="eyebrow">판매 차량</p>
+        <h2 id="vehicle-catalog-title">{{ sectionTitle }}</h2>
+        <p v-if="simplified" class="vehicle-catalog__lead">
+          현재 바로 문의 가능한 차량만 표시됩니다.
+        </p>
       </div>
 
-      <div class="vehicle-catalog__controls">
+      <div v-if="!simplified" class="vehicle-catalog__controls">
         <label class="field-label">
           <span>차량 검색</span>
           <input v-model.trim="searchQuery" type="search" placeholder="브랜드, 모델, 차종 검색" />
@@ -28,11 +31,16 @@
       {{ errorMessage }}
     </div>
     <div v-else-if="visibleVehicles.length === 0" class="vehicle-catalog__state">
-      등록된 차량이 없습니다.
+      현재 판매중인 차량이 없습니다.
     </div>
 
-    <div v-else class="vehicle-grid">
-      <VehicleCard v-for="vehicle in visibleVehicles" :key="vehicle.id" :vehicle="vehicle" />
+    <div v-else class="vehicle-grid" :class="{ 'vehicle-grid--simple': simplified }">
+      <VehicleCard
+        v-for="vehicle in visibleVehicles"
+        :key="vehicle.id"
+        :vehicle="vehicle"
+        :simple="simplified"
+      />
     </div>
   </section>
 </template>
@@ -46,9 +54,13 @@ import type { Vehicle, VehicleCatalog, VehicleStatus } from '@/types/vehicle'
 const props = withDefaults(
   defineProps<{
     dataPath?: string
+    availableOnly?: boolean
+    simplified?: boolean
   }>(),
   {
     dataPath: 'data/vehicle-catalog.json',
+    availableOnly: false,
+    simplified: false,
   },
 )
 
@@ -58,14 +70,17 @@ const errorMessage = ref<string | null>(null)
 const searchQuery = ref('')
 const statusFilter = ref<VehicleStatus | 'all'>('all')
 
+const sectionTitle = computed(() => (props.availableOnly ? '판매중 차량' : '등록 차량'))
+
 const visibleVehicles = computed(() => {
   const query = searchQuery.value.toLowerCase()
 
   return [...(catalog.value?.vehicles ?? [])]
     .filter((vehicle) => vehicle.status !== 'hidden')
-    .filter((vehicle) => statusFilter.value === 'all' || vehicle.status === statusFilter.value)
+    .filter((vehicle) => !props.availableOnly || vehicle.status === 'available')
+    .filter((vehicle) => props.simplified || statusFilter.value === 'all' || vehicle.status === statusFilter.value)
     .filter((vehicle) => {
-      if (!query) return true
+      if (props.simplified || !query) return true
       const haystack = [
         vehicle.title,
         vehicle.profile.brand,

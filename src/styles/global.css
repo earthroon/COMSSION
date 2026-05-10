@@ -121,6 +121,27 @@ select {
   margin-bottom: 36px;
 }
 
+.catalog-page--front {
+  padding-top: 42px;
+}
+
+.catalog-page__hero--front {
+  max-width: 880px;
+  margin-bottom: 28px;
+}
+
+.catalog-page__hero--front h1 {
+  font-size: clamp(2rem, 4.8vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+.catalog-page__hero--front p:last-child {
+  max-width: 760px;
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+}
+
 h1,
 h2,
 h3,

@@ -1,8 +1,13 @@
 <template>
-  <RouterLink class="vehicle-card" :to="{ name: 'vehicle-detail', params: { vehicleId: vehicle.id } }">
+  <RouterLink
+    class="vehicle-card"
+    :class="{ 'vehicle-card--simple': simple }"
+    :to="{ name: 'vehicle-detail', params: { vehicleId: vehicle.id } }"
+    :aria-label="`${vehicle.title} 상세 페이지로 이동`"
+  >
     <div class="vehicle-card__media">
       <img :src="withBaseUrl(vehicle.thumbnail)" :alt="`${vehicle.title} 대표 이미지`" loading="lazy" />
-      <span class="vehicle-status" :data-status="vehicle.status">{{ statusLabel }}</span>
+      <span v-if="!simple" class="vehicle-status" :data-status="vehicle.status">{{ statusLabel }}</span>
     </div>
 
     <div class="vehicle-card__body">
@@ -14,7 +19,12 @@
       <p>{{ vehicle.profile.shortDescription }}</p>
     </div>
 
-    <div class="vehicle-card__footer">
+    <div v-if="simple" class="vehicle-card__simple-footer">
+      <span>상세 정보 보기</span>
+      <span aria-hidden="true">→</span>
+    </div>
+
+    <div v-else class="vehicle-card__footer">
       <span>상세 보기</span>
       <VehiclePhoneCopyButton v-if="vehicle.contact" :contact="vehicle.contact" compact />
     </div>
@@ -27,9 +37,15 @@ import VehiclePhoneCopyButton from './VehiclePhoneCopyButton.vue'
 import { withBaseUrl } from '@/data/fetchVehicleCatalog'
 import type { Vehicle } from '@/types/vehicle'
 
-const props = defineProps<{
-  vehicle: Vehicle
-}>()
+const props = withDefaults(
+  defineProps<{
+    vehicle: Vehicle
+    simple?: boolean
+  }>(),
+  {
+    simple: false,
+  },
+)
 
 const statusLabel = computed(() => {
   const labels: Record<Vehicle['status'], string> = {

@@ -5,13 +5,12 @@ export const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/pages/HomePage.vue'),
+      name: 'vehicle-catalog',
+      component: () => import('@/pages/CatalogPage.vue'),
     },
     {
       path: '/catalog',
-      name: 'vehicle-catalog',
-      component: () => import('@/pages/CatalogPage.vue'),
+      redirect: { name: 'vehicle-catalog' },
     },
     {
       path: '/catalog/:vehicleId',

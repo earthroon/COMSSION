@@ -12,22 +12,13 @@ export type PageIndexItem = {
 
 export const pageIndex = [
   {
-    id: 'home',
-    label: '홈',
+    id: 'catalog',
+    label: '판매 차량',
     href: '/',
     section: 'main',
     surface: ['header', 'footer'],
     order: 0,
-    description: '카반하다 메인 페이지.',
-  },
-  {
-    id: 'catalog',
-    label: '차량 목록',
-    href: '/catalog',
-    section: 'main',
-    surface: ['header', 'footer'],
-    order: 10,
-    description: '카반하다 차량 카탈로그.',
+    description: '카반하다 판매중 차량 목록.',
   },
 ] as const satisfies readonly PageIndexItem[]
 
