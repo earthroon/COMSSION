@@ -1,8 +1,10 @@
 <template>
   <header class="site-header">
-    <RouterLink class="site-header__brand" to="/" aria-label="Go home">
-      <span class="site-header__mark">VC</span>
-      <span>Vehicle Catalog</span>
+    <RouterLink class="site-header__brand" to="/" aria-label="카반하다 홈으로 이동">
+      <span class="site-header__mark site-header__mark--logo">
+        <img :src="logoSrc" alt="" aria-hidden="true" />
+      </span>
+      <span>카반하다</span>
     </RouterLink>
 
     <nav class="site-header__nav" aria-label="Primary navigation">
@@ -22,4 +24,5 @@
 import { getNavigation } from '@/navigation/pageIndex'
 
 const navigation = getNavigation('header')
+const logoSrc = `${import.meta.env.BASE_URL}brand/logo.svg`
 </script>

@@ -170,3 +170,118 @@ p {
     flex-direction: column;
   }
 }
+
+.site-header__mark--logo {
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid rgba(29, 111, 216, 0.18);
+  box-shadow: 0 8px 20px rgba(29, 111, 216, 0.12);
+}
+
+.site-header__mark--logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.home-page--kabanhada {
+  display: grid;
+  gap: 52px;
+}
+
+.home-hero--brand {
+  grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+  align-items: center;
+  max-width: var(--content-width);
+  min-height: 560px;
+  margin-bottom: 0;
+}
+
+.home-hero__logo-wrap {
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 30px);
+  border: 1px solid var(--color-border);
+  border-radius: 32px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(220, 236, 255, 0.58));
+  box-shadow: var(--shadow-card);
+}
+
+.home-hero__logo {
+  width: min(220px, 58vw);
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: contain;
+}
+
+.home-hero__copy {
+  display: grid;
+  gap: 18px;
+}
+
+.home-hero__description {
+  max-width: 720px;
+  font-size: clamp(1rem, 1.8vw, 1.18rem);
+}
+
+.home-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button-link--ghost {
+  color: var(--color-primary-deep);
+  background: var(--color-primary-soft);
+}
+
+.home-promises {
+  display: grid;
+  gap: 22px;
+}
+
+.home-section-heading {
+  display: grid;
+  gap: 8px;
+}
+
+.home-promise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-promise-card {
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.home-promise-card h3 {
+  margin: 0 0 10px;
+  color: var(--color-primary-deep);
+  font-size: 1.24rem;
+}
+
+.home-promise-card p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .home-hero--brand {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .home-hero__logo-wrap {
+    width: min(300px, 100%);
+  }
+
+  .home-promise-grid {
+    grid-template-columns: 1fr;
+  }
+}
