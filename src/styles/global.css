@@ -220,6 +220,13 @@ p {
   gap: 18px;
 }
 
+.home-page--kabanhada .home-hero__copy h1 {
+  font-size: clamp(1.87rem, 5.1vw, 4.08rem);
+  line-height: 1.5;
+  letter-spacing: -0.035em;
+  word-break: keep-all;
+}
+
 .home-hero__description {
   max-width: 720px;
   font-size: clamp(1rem, 1.8vw, 1.18rem);
