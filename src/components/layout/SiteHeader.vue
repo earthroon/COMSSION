@@ -7,7 +7,7 @@
       <span>카반하다</span>
     </RouterLink>
 
-    <nav class="site-header__nav" aria-label="Primary navigation">
+    <nav class="site-header__nav" aria-label="주요 메뉴">
       <RouterLink
         v-for="item in navigation"
         :key="item.id"

@@ -1,5 +1,5 @@
 <template>
-  <section class="vehicle-video" aria-label="Vehicle video">
+  <section class="vehicle-video" aria-label="차량 소개 영상">
     <iframe
       :src="embedUrl"
       :title="title"

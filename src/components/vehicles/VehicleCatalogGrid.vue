@@ -2,33 +2,33 @@
   <section class="vehicle-catalog" aria-labelledby="vehicle-catalog-title">
     <div class="vehicle-catalog__toolbar">
       <div>
-        <p class="eyebrow">Browse</p>
-        <h2 id="vehicle-catalog-title">Available vehicles</h2>
+        <p class="eyebrow">차량 보기</p>
+        <h2 id="vehicle-catalog-title">등록 차량</h2>
       </div>
 
       <div class="vehicle-catalog__controls">
         <label class="field-label">
-          <span>Search</span>
-          <input v-model.trim="searchQuery" type="search" placeholder="Brand, model, type" />
+          <span>차량 검색</span>
+          <input v-model.trim="searchQuery" type="search" placeholder="브랜드, 모델, 차종 검색" />
         </label>
         <label class="field-label">
-          <span>Status</span>
+          <span>판매 상태</span>
           <select v-model="statusFilter">
-            <option value="all">All</option>
-            <option value="available">Available</option>
-            <option value="reserved">Reserved</option>
-            <option value="sold">Sold</option>
+            <option value="all">전체</option>
+            <option value="available">판매중</option>
+            <option value="reserved">예약중</option>
+            <option value="sold">판매완료</option>
           </select>
         </label>
       </div>
     </div>
 
-    <div v-if="isLoading" class="vehicle-catalog__state">Loading catalog...</div>
+    <div v-if="isLoading" class="vehicle-catalog__state">차량 목록을 불러오는 중입니다...</div>
     <div v-else-if="errorMessage" class="vehicle-catalog__state vehicle-catalog__state--error">
       {{ errorMessage }}
     </div>
     <div v-else-if="visibleVehicles.length === 0" class="vehicle-catalog__state">
-      No vehicles are registered yet.
+      등록된 차량이 없습니다.
     </div>
 
     <div v-else class="vehicle-grid">
@@ -86,7 +86,7 @@ onMounted(async () => {
   try {
     catalog.value = await fetchVehicleCatalog(props.dataPath)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error.'
+    errorMessage.value = error instanceof Error ? error.message : '차량 목록을 불러오지 못했습니다.'
   } finally {
     isLoading.value = false
   }

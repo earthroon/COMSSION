@@ -1,24 +1,24 @@
 <template>
   <main v-if="isLoading" class="empty-page">
-    <p class="eyebrow">Loading</p>
-    <h1>Loading vehicle</h1>
+    <p class="eyebrow">불러오는 중</p>
+    <h1>차량 정보를 불러오고 있습니다</h1>
   </main>
 
   <main v-else-if="errorMessage" class="empty-page">
-    <p class="eyebrow">Catalog error</p>
-    <h1>Could not load vehicle catalog</h1>
+    <p class="eyebrow">카탈로그 오류</p>
+    <h1>차량 목록을 불러오지 못했습니다</h1>
     <p>{{ errorMessage }}</p>
     <RouterLink class="button-link" :to="{ name: 'vehicle-catalog' }">
-      Back to catalog
+      차량 목록으로 돌아가기
     </RouterLink>
   </main>
 
   <main v-else-if="!vehicle" class="empty-page">
-    <p class="eyebrow">Not found</p>
-    <h1>Vehicle not found</h1>
-    <p>No vehicle is registered for this URL.</p>
+    <p class="eyebrow">차량 없음</p>
+    <h1>등록되지 않은 차량입니다</h1>
+    <p>이 주소에 연결된 차량 정보가 없습니다.</p>
     <RouterLink class="button-link" :to="{ name: 'vehicle-catalog' }">
-      Back to catalog
+      차량 목록으로 돌아가기
     </RouterLink>
   </main>
 
@@ -50,7 +50,7 @@ onMounted(async () => {
   try {
     catalog.value = await fetchVehicleCatalog()
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error.'
+    errorMessage.value = error instanceof Error ? error.message : '차량 정보를 불러오지 못했습니다.'
   } finally {
     isLoading.value = false
   }

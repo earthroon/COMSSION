@@ -37,7 +37,7 @@ function vehicleSvg(label, variant) {
     <path d="M240 110h480"/>
     <path d="M360 110l46-86h210l80 86"/>
   </g>
-  <text x="640" y="690" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800" fill="#0f3f86">${label}</text>
+  <text x="640" y="690" text-anchor="middle" font-family="Pretendard, Arial, sans-serif" font-size="42" font-weight="800" fill="#0f3f86">${label}</text>
 </svg>`
 }
 
@@ -47,11 +47,15 @@ function iconSvg(name, pathData) {
 </svg>`
 }
 
-const vehicles = ['vehicle-001', 'vehicle-002', 'vehicle-003']
-for (const id of vehicles) {
-  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'thumbnail.svg'), vehicleSvg(`${id} thumbnail`, 'thumb'))
-  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'gallery-01.svg'), vehicleSvg(`${id} gallery 01`, 'side'))
-  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'gallery-02.svg'), vehicleSvg(`${id} gallery 02`, 'detail'))
+const vehicles = {
+  'vehicle-001': '현대 아반떼 CN7',
+  'vehicle-002': '기아 쏘렌토',
+  'vehicle-003': '기아 카니발',
+}
+for (const [id, label] of Object.entries(vehicles)) {
+  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'thumbnail.svg'), vehicleSvg(`${label} 대표 이미지`, 'thumb'))
+  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'gallery-01.svg'), vehicleSvg(`${label} 외관 이미지`, 'side'))
+  await writeIfMissing(path.join(root, 'public', 'vehicles', id, 'gallery-02.svg'), vehicleSvg(`${label} 상세 이미지`, 'detail'))
 }
 
 const icons = {

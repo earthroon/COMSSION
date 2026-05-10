@@ -1,14 +1,14 @@
 <template>
   <main class="vehicle-detail">
     <RouterLink class="vehicle-detail__back" :to="{ name: 'vehicle-catalog' }">
-      Back to catalog
+      차량 목록으로 돌아가기
     </RouterLink>
 
     <section class="vehicle-detail__hero">
-      <p class="eyebrow">Vehicle Profile</p>
+      <p class="eyebrow">차량 상세 정보</p>
       <h1>{{ vehicle.title }}</h1>
       <p>
-        {{ vehicle.profile.vehicleType }} · {{ vehicle.profile.year }} ·
+        {{ vehicle.profile.vehicleType }} · {{ vehicle.profile.year }}년식 ·
         {{ vehicle.profile.mileageKm.toLocaleString() }}km
       </p>
     </section>
@@ -23,13 +23,13 @@
     <VehicleProfileColumns :vehicle="vehicle" />
 
     <section class="vehicle-detail__description">
-      <h2>Details</h2>
+      <h2>상세 설명</h2>
       <p>{{ vehicle.profile.detailDescription }}</p>
     </section>
 
     <section v-if="vehicle.contact" class="vehicle-detail__cta">
       <div>
-        <p class="eyebrow">Contact</p>
+        <p class="eyebrow">상담 문의</p>
         <h2>{{ vehicle.contact.label }}</h2>
         <p>{{ vehicle.contact.phoneDisplay }}</p>
       </div>

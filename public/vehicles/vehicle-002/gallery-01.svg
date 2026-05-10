@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="vehicle-002 gallery 01">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="기아 쏘렌토 외관 이미지">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#eaf4ff"/>
@@ -15,5 +15,5 @@
     <path d="M240 110h480"/>
     <path d="M360 110l46-86h210l80 86"/>
   </g>
-  <text x="640" y="690" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800" fill="#0f3f86">vehicle-002 gallery 01</text>
+  <text x="640" y="690" text-anchor="middle" font-family="Pretendard, Arial, sans-serif" font-size="42" font-weight="800" fill="#0f3f86">기아 쏘렌토 외관 이미지</text>
 </svg>
