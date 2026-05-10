@@ -9,18 +9,19 @@
     "validate:vehicles": "node scripts/validate-vehicle-catalog.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "typecheck": "vue-tsc --noEmit",
-    "prebuild": "npm run assets:dummy && npm run validate:vehicles && npm run validate:content",
+    "prebuild": "npm run assets:dummy && npm run optimize:images && npm run validate:vehicles && npm run validate:content",
     "build": "vite build && node scripts/create-spa-fallback.mjs",
     "build:checked": "npm run typecheck && npm run build",
-    "build:sheet": "npm run assets:dummy && npm run sync:vehicles && npm run validate:vehicles && npm run validate:content && vite build && node scripts/create-spa-fallback.mjs",
-    "build:sheet:checked": "npm run assets:dummy && npm run sync:vehicles && npm run validate:vehicles && npm run validate:content && npm run typecheck && vite build && node scripts/create-spa-fallback.mjs",
+    "build:sheet": "npm run assets:dummy && npm run sync:vehicles && npm run optimize:images && npm run validate:vehicles && npm run validate:content && vite build && node scripts/create-spa-fallback.mjs",
+    "build:sheet:checked": "npm run assets:dummy && npm run sync:vehicles && npm run optimize:images && npm run validate:vehicles && npm run validate:content && npm run typecheck && vite build && node scripts/create-spa-fallback.mjs",
     "dev": "vite",
     "preview": "vite preview",
     "git:setup": "node scripts/git-setup.mjs",
     "git:status": "node scripts/git-status.mjs",
     "git:update": "node scripts/git-update.mjs",
     "git:publish": "node scripts/git-update.mjs",
-    "setup:sheet-deps": "npm install googleapis@^144.0.0 --no-save --no-audit --fund=false --package-lock=false"
+    "setup:sheet-deps": "npm install googleapis@^144.0.0 --no-save --no-audit --fund=false --package-lock=false",
+    "optimize:images": "node scripts/optimize-vehicle-images.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "typescript": "^5.8.3",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^2.2.10",
+    "sharp": "^0.33.5"
   }
 }

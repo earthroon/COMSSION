@@ -1026,13 +1026,11 @@
 
   .vehicle-gallery__mobile-viewer {
     position: relative;
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) 48px;
-    align-items: center;
-    gap: 8px;
+    display: block;
   }
 
   .vehicle-gallery__mobile-frame {
+    position: relative;
     overflow: hidden;
     border: 1px solid #b8d4f7;
     border-radius: 22px;
@@ -1074,18 +1072,55 @@
   }
 
   .vehicle-gallery__nav {
+    position: absolute;
+    top: calc(50% - 34px);
+    z-index: 4;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 64px;
-    border: 1px solid #b8d4f7;
-    border-radius: 18px;
-    background: #ffffff;
+    width: 58px;
+    height: 68px;
+    border: 1px solid rgba(184, 212, 247, 0.94);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.94);
     color: var(--color-primary);
-    box-shadow: 0 14px 30px rgba(30, 96, 180, 0.13);
+    box-shadow: 0 14px 30px rgba(30, 96, 180, 0.18);
     cursor: pointer;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .vehicle-gallery__nav--prev {
+    left: 10px;
+  }
+
+  .vehicle-gallery__nav--next {
+    right: 10px;
+  }
+
+  .vehicle-gallery__tap-zone {
+    position: absolute;
+    top: 0;
+    bottom: 54px;
+    z-index: 3;
+    width: 32%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .vehicle-gallery__tap-zone--prev {
+    left: 0;
+  }
+
+  .vehicle-gallery__tap-zone--next {
+    right: 0;
+  }
+
+  .vehicle-gallery__tap-zone:disabled {
+    cursor: default;
   }
 
   .vehicle-gallery__nav span {
@@ -1143,19 +1178,28 @@
 }
 
 @media (max-width: 420px) {
-  .vehicle-gallery__mobile-viewer {
-    grid-template-columns: 42px minmax(0, 1fr) 42px;
-    gap: 6px;
+  .vehicle-gallery__nav {
+    top: calc(50% - 32px);
+    width: 54px;
+    height: 64px;
+    border-radius: 18px;
   }
 
-  .vehicle-gallery__nav {
-    width: 42px;
-    height: 58px;
-    border-radius: 16px;
+  .vehicle-gallery__nav--prev {
+    left: 8px;
+  }
+
+  .vehicle-gallery__nav--next {
+    right: 8px;
   }
 
   .vehicle-gallery__nav span {
-    font-size: 2.1rem;
+    font-size: 2.25rem;
+  }
+
+  .vehicle-gallery__tap-zone {
+    width: 34%;
+    bottom: 64px;
   }
 
   .vehicle-gallery__mobile-caption {

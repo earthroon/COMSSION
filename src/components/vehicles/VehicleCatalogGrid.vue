@@ -1,15 +1,18 @@
 <template>
-  <section class="vehicle-catalog" :class="{ 'vehicle-catalog--simple': simplified }" aria-labelledby="vehicle-catalog-title">
-    <div class="vehicle-catalog__toolbar" :class="{ 'vehicle-catalog__toolbar--simple': simplified }">
+  <section
+    class="vehicle-catalog"
+    :class="{ 'vehicle-catalog--simple': simplified }"
+    aria-labelledby="vehicle-catalog-title"
+  >
+    <h2 v-if="simplified" id="vehicle-catalog-title" class="sr-only">{{ sectionTitle }}</h2>
+
+    <div v-else class="vehicle-catalog__toolbar">
       <div>
         <p class="eyebrow">판매 차량</p>
         <h2 id="vehicle-catalog-title">{{ sectionTitle }}</h2>
-        <p v-if="simplified" class="vehicle-catalog__lead">
-          현재 바로 문의 가능한 차량만 표시됩니다.
-        </p>
       </div>
 
-      <div v-if="!simplified" class="vehicle-catalog__controls">
+      <div class="vehicle-catalog__controls">
         <label class="field-label">
           <span>차량 검색</span>
           <input v-model.trim="searchQuery" type="search" placeholder="브랜드, 모델, 차종 검색" />

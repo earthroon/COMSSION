@@ -9,16 +9,6 @@
     </div>
 
     <div v-if="activeImage" class="vehicle-gallery__mobile-viewer" aria-live="polite">
-      <button
-        class="vehicle-gallery__nav vehicle-gallery__nav--prev"
-        type="button"
-        :disabled="orderedImages.length <= 1"
-        aria-label="이전 사진 보기"
-        @click="showPrevious"
-      >
-        <span aria-hidden="true">‹</span>
-      </button>
-
       <figure class="vehicle-gallery__mobile-frame">
         <button
           class="vehicle-gallery__image-button"
@@ -31,24 +21,67 @@
           @keydown.enter.prevent="openLightbox(activeIndex)"
           @keydown.space.prevent="openLightbox(activeIndex)"
         >
-          <img :src="withBaseUrl(activeImage.src)" :alt="activeImage.alt" loading="lazy" />
+          <img :src="withBaseUrl(activeImage.src)" :alt="activeImage.alt" loading="eager" decoding="async" />
           <span class="vehicle-gallery__zoom-hint" aria-hidden="true">확대 보기</span>
         </button>
+
+        <button
+          class="vehicle-gallery__tap-zone vehicle-gallery__tap-zone--prev"
+          type="button"
+          :disabled="orderedImages.length <= 1"
+          aria-label="이전 사진 보기"
+          @pointerdown="rememberNavPointerStart"
+          @pointerup="activateNavigationFromPointer($event, 'previous')"
+          @pointercancel="clearNavPointerStart"
+          @click.prevent
+        >
+          <span class="sr-only">이전 사진 보기</span>
+        </button>
+
+        <button
+          class="vehicle-gallery__tap-zone vehicle-gallery__tap-zone--next"
+          type="button"
+          :disabled="orderedImages.length <= 1"
+          aria-label="다음 사진 보기"
+          @pointerdown="rememberNavPointerStart"
+          @pointerup="activateNavigationFromPointer($event, 'next')"
+          @pointercancel="clearNavPointerStart"
+          @click.prevent
+        >
+          <span class="sr-only">다음 사진 보기</span>
+        </button>
+
+        <button
+          class="vehicle-gallery__nav vehicle-gallery__nav--prev"
+          type="button"
+          :disabled="orderedImages.length <= 1"
+          aria-label="이전 사진 보기"
+          @pointerdown="rememberNavPointerStart"
+          @pointerup="activateNavigationFromPointer($event, 'previous')"
+          @pointercancel="clearNavPointerStart"
+          @click.prevent
+        >
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <button
+          class="vehicle-gallery__nav vehicle-gallery__nav--next"
+          type="button"
+          :disabled="orderedImages.length <= 1"
+          aria-label="다음 사진 보기"
+          @pointerdown="rememberNavPointerStart"
+          @pointerup="activateNavigationFromPointer($event, 'next')"
+          @pointercancel="clearNavPointerStart"
+          @click.prevent
+        >
+          <span aria-hidden="true">›</span>
+        </button>
+
         <figcaption class="vehicle-gallery__mobile-caption">
           <span>{{ activeIndex + 1 }} / {{ orderedImages.length }}</span>
           <strong>{{ activeImage.alt }}</strong>
         </figcaption>
       </figure>
-
-      <button
-        class="vehicle-gallery__nav vehicle-gallery__nav--next"
-        type="button"
-        :disabled="orderedImages.length <= 1"
-        aria-label="다음 사진 보기"
-        @click="showNext"
-      >
-        <span aria-hidden="true">›</span>
-      </button>
     </div>
 
     <div v-if="orderedImages.length > 1" class="vehicle-gallery__tabs" role="tablist" aria-label="차량 사진 선택">
@@ -169,6 +202,7 @@ const activeIndex = ref(0)
 const isLightboxOpen = ref(false)
 const lightboxIndex = ref(0)
 const pointerStart = ref<{ x: number; y: number; time: number } | null>(null)
+const navPointerStart = ref<{ x: number; y: number; time: number } | null>(null)
 
 const orderedImages = computed(() => {
   return [...props.images].sort((a, b) => a.sortOrder - b.sortOrder)
@@ -176,6 +210,23 @@ const orderedImages = computed(() => {
 
 const activeImage = computed(() => orderedImages.value[activeIndex.value])
 const lightboxImage = computed(() => orderedImages.value[lightboxIndex.value])
+
+const preloadGalleryImage = (index: number) => {
+  const image = orderedImages.value[index]
+  if (!image || typeof window === 'undefined') return
+
+  const preloadImage = new window.Image()
+  preloadImage.decoding = 'async'
+  preloadImage.src = withBaseUrl(image.src)
+}
+
+watch([activeIndex, orderedImages], () => {
+  const length = orderedImages.value.length
+  if (length <= 1) return
+
+  preloadGalleryImage((activeIndex.value + 1) % length)
+  preloadGalleryImage((activeIndex.value - 1 + length) % length)
+}, { immediate: true })
 
 watch(
   orderedImages,
@@ -239,6 +290,39 @@ const rememberPointerStart = (event: PointerEvent) => {
 
 const clearPointerStart = () => {
   pointerStart.value = null
+}
+
+const rememberNavPointerStart = (event: PointerEvent) => {
+  if (event.pointerType === 'mouse' && event.button !== 0) return
+  navPointerStart.value = {
+    x: event.clientX,
+    y: event.clientY,
+    time: window.performance.now(),
+  }
+}
+
+const clearNavPointerStart = () => {
+  navPointerStart.value = null
+}
+
+const activateNavigationFromPointer = (event: PointerEvent, direction: 'previous' | 'next') => {
+  const start = navPointerStart.value
+  navPointerStart.value = null
+  if (!start) return
+
+  const movedX = Math.abs(event.clientX - start.x)
+  const movedY = Math.abs(event.clientY - start.y)
+  const elapsed = window.performance.now() - start.time
+
+  const isClearTap = movedX < 12 && movedY < 12 && elapsed < 700
+  if (!isClearTap) return
+
+  if (direction === 'previous') {
+    showPrevious()
+    return
+  }
+
+  showNext()
 }
 
 const openLightboxFromPointer = (event: PointerEvent, index: number) => {
