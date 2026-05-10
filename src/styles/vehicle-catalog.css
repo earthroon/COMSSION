@@ -1519,3 +1519,186 @@ html.is-gallery-open body {
     font-size: 2.05rem;
   }
 }
+
+/* Lightbox zoom SSOT: zoom only the image, never the whole gallery UI. */
+.vehicle-lightbox {
+  overscroll-behavior: contain;
+}
+
+.vehicle-lightbox__panel {
+  grid-template-columns: 64px minmax(0, 1fr) 64px;
+  max-width: 1180px;
+}
+
+.vehicle-lightbox__figure {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+  max-height: calc(100vh - 92px);
+}
+
+.vehicle-lightbox__image-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: min(72vh, 720px);
+  background: #eaf4ff;
+  cursor: zoom-in;
+  touch-action: none;
+  user-select: none;
+}
+
+.vehicle-lightbox__figure--zoomed .vehicle-lightbox__image-stage {
+  cursor: grab;
+}
+
+.vehicle-lightbox__image-stage:active {
+  cursor: grabbing;
+}
+
+.vehicle-lightbox__image,
+.vehicle-lightbox__figure .vehicle-lightbox__image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(72vh, 720px);
+  object-fit: contain;
+  background: transparent;
+  transform-origin: center center;
+  transition: transform 160ms ease;
+  will-change: transform;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.vehicle-lightbox__image--zoomed,
+.vehicle-lightbox__figure .vehicle-lightbox__image--zoomed {
+  transition: transform 80ms linear;
+}
+
+.vehicle-lightbox__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.vehicle-lightbox__caption-text {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.vehicle-lightbox__caption-text strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vehicle-lightbox__zoom-controls {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 7px;
+}
+
+.vehicle-lightbox__zoom-controls button {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid rgba(29, 111, 222, 0.24);
+  border-radius: 999px;
+  background: #edf5ff;
+  color: #0c4d9f;
+  font-family: "Pretendard", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+}
+
+.vehicle-lightbox__zoom-controls button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .vehicle-lightbox {
+    padding: 10px;
+  }
+
+  .vehicle-lightbox__panel {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-content: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .vehicle-lightbox__figure {
+    max-height: calc(100vh - 82px);
+    border-radius: 20px;
+  }
+
+  .vehicle-lightbox__image-stage {
+    min-height: min(58vh, 560px);
+  }
+
+  .vehicle-lightbox__image,
+  .vehicle-lightbox__figure .vehicle-lightbox__image {
+    max-height: min(58vh, 560px);
+  }
+
+  .vehicle-lightbox__caption {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .vehicle-lightbox__caption-text strong {
+    white-space: normal;
+  }
+
+  .vehicle-lightbox__zoom-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+
+  .vehicle-lightbox__zoom-controls button {
+    min-height: 42px;
+    padding: 0 8px;
+    font-size: 0.9rem;
+  }
+
+  .vehicle-lightbox__nav {
+    width: 44px;
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  .vehicle-lightbox__close {
+    top: 6px;
+    right: 6px;
+    width: 46px;
+    height: 46px;
+  }
+}
+
+@media (max-width: 420px) {
+  .vehicle-lightbox__panel {
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    gap: 4px;
+  }
+
+  .vehicle-lightbox__nav {
+    width: 38px;
+    height: 58px;
+  }
+
+  .vehicle-lightbox__nav span {
+    font-size: 2rem;
+  }
+}
