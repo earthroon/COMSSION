@@ -7,10 +7,15 @@
     <section class="vehicle-detail__hero">
       <p class="eyebrow">차량 상세 정보</p>
       <h1>{{ vehicle.title }}</h1>
-      <p>
-        {{ vehicle.profile.vehicleType }} · {{ vehicle.profile.year }}년식 ·
-        {{ vehicle.profile.mileageKm.toLocaleString() }}km
+      <p class="vehicle-detail__lead">
+        핵심 정보를 먼저 확인하고, 사진과 영상으로 차량 상태를 살펴보세요.
       </p>
+      <ul class="vehicle-detail__keyfacts" aria-label="차량 핵심 정보">
+        <li v-for="fact in keyFacts" :key="fact.label">
+          <span>{{ fact.label }}</span>
+          <strong>{{ fact.value }}</strong>
+        </li>
+      </ul>
     </section>
 
     <VehicleYoutubeEmbed
@@ -39,13 +44,32 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import VehicleGallery from './VehicleGallery.vue'
 import VehiclePhoneCopyButton from './VehiclePhoneCopyButton.vue'
 import VehicleProfileColumns from './VehicleProfileColumns.vue'
 import VehicleYoutubeEmbed from './VehicleYoutubeEmbed.vue'
 import type { Vehicle } from '@/types/vehicle'
 
-defineProps<{
+const props = defineProps<{
   vehicle: Vehicle
 }>()
+
+const statusLabel = computed(() => {
+  const labels: Record<Vehicle['status'], string> = {
+    available: '판매중',
+    reserved: '예약중',
+    sold: '판매완료',
+    hidden: '비공개',
+  }
+
+  return labels[props.vehicle.status]
+})
+
+const keyFacts = computed(() => [
+  { label: '상태', value: statusLabel.value },
+  { label: '연식', value: `${props.vehicle.profile.year}년식` },
+  { label: '주행거리', value: `${props.vehicle.profile.mileageKm.toLocaleString()}km` },
+  { label: '차종', value: props.vehicle.profile.vehicleType },
+])
 </script>

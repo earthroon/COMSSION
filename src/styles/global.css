@@ -375,3 +375,36 @@ h3,
   font-weight: 600;
   letter-spacing: -0.02em;
 }
+
+
+/* Mobile navigation tightening for catalog-first users. */
+@media (max-width: 760px) {
+  .site-header {
+    position: sticky;
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .site-header__brand {
+    min-width: 0;
+    gap: 9px;
+    font-size: 0.98rem;
+  }
+
+  .site-header__mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+
+  .site-footer {
+    padding: 24px 14px;
+    font-size: 0.95rem;
+  }
+}
