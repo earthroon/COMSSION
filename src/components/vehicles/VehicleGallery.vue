@@ -152,41 +152,11 @@
             <span aria-hidden="true">‹</span>
           </button>
 
-          <figure
-            class="vehicle-lightbox__figure"
-            :class="{ 'vehicle-lightbox__figure--zoomed': lightboxZoom > 1 }"
-          >
-            <div
-              class="vehicle-lightbox__image-stage"
-              role="group"
-              aria-label="확대된 차량 사진. 확대 상태에서는 사진을 끌어서 볼 수 있습니다."
-              @pointerdown="startLightboxPan"
-              @pointermove="moveLightboxPan"
-              @pointerup="endLightboxPan"
-              @pointercancel="endLightboxPan"
-              @wheel.prevent="handleLightboxWheel"
-              @dblclick.prevent="toggleLightboxZoom"
-            >
-              <img
-                class="vehicle-lightbox__image"
-                :class="{ 'vehicle-lightbox__image--zoomed': lightboxZoom > 1 }"
-                :src="withBaseUrl(lightboxImage.src)"
-                :alt="lightboxImage.alt"
-                :style="lightboxImageStyle"
-                draggable="false"
-              />
-            </div>
-
+          <figure class="vehicle-lightbox__figure">
+            <img :src="withBaseUrl(lightboxImage.src)" :alt="lightboxImage.alt" />
             <figcaption class="vehicle-lightbox__caption">
-              <div class="vehicle-lightbox__caption-text">
-                <span>{{ lightboxIndex + 1 }} / {{ orderedImages.length }}</span>
-                <strong>{{ lightboxImage.alt }}</strong>
-              </div>
-              <div class="vehicle-lightbox__zoom-controls" aria-label="사진 확대 조절">
-                <button type="button" :disabled="lightboxZoom <= 1" @click="zoomOutLightboxImage">축소</button>
-                <button type="button" @click="resetLightboxZoom">원본</button>
-                <button type="button" :disabled="lightboxZoom >= maxLightboxZoom" @click="zoomInLightboxImage">확대</button>
-              </div>
+              <span>{{ lightboxIndex + 1 }} / {{ orderedImages.length }}</span>
+              <strong>{{ lightboxImage.alt }}</strong>
             </figcaption>
           </figure>
 
@@ -231,19 +201,8 @@ const props = defineProps<{
 const activeIndex = ref(0)
 const isLightboxOpen = ref(false)
 const lightboxIndex = ref(0)
-const lightboxZoom = ref(1)
-const lightboxPan = ref({ x: 0, y: 0 })
 const pointerStart = ref<{ x: number; y: number; time: number } | null>(null)
 const navPointerStart = ref<{ x: number; y: number; time: number } | null>(null)
-const lightboxPanStart = ref<{
-  pointerId: number
-  x: number
-  y: number
-  originX: number
-  originY: number
-} | null>(null)
-
-const maxLightboxZoom = 3
 
 const orderedImages = computed(() => {
   return [...props.images].sort((a, b) => a.sortOrder - b.sortOrder)
@@ -251,9 +210,6 @@ const orderedImages = computed(() => {
 
 const activeImage = computed(() => orderedImages.value[activeIndex.value])
 const lightboxImage = computed(() => orderedImages.value[lightboxIndex.value])
-const lightboxImageStyle = computed(() => ({
-  transform: `translate3d(${lightboxPan.value.x}px, ${lightboxPan.value.y}px, 0) scale(${lightboxZoom.value})`,
-}))
 
 const preloadGalleryImage = (index: number) => {
   const image = orderedImages.value[index]
@@ -272,16 +228,6 @@ watch([activeIndex, orderedImages], () => {
   preloadGalleryImage((activeIndex.value - 1 + length) % length)
 }, { immediate: true })
 
-watch([lightboxIndex, orderedImages], () => {
-  resetLightboxZoom()
-
-  const length = orderedImages.value.length
-  if (length <= 1) return
-
-  preloadGalleryImage((lightboxIndex.value + 1) % length)
-  preloadGalleryImage((lightboxIndex.value - 1 + length) % length)
-}, { immediate: true })
-
 watch(
   orderedImages,
   (images) => {
@@ -297,90 +243,7 @@ watch(
 
 watch(isLightboxOpen, (isOpen) => {
   document.documentElement.classList.toggle('is-gallery-open', isOpen)
-  if (!isOpen) {
-    resetLightboxZoom()
-  }
 })
-
-const clampZoom = (zoom: number) => {
-  return Math.min(maxLightboxZoom, Math.max(1, Number(zoom.toFixed(2))))
-}
-
-const resetLightboxZoom = () => {
-  lightboxZoom.value = 1
-  lightboxPan.value = { x: 0, y: 0 }
-  lightboxPanStart.value = null
-}
-
-const setLightboxZoom = (zoom: number) => {
-  lightboxZoom.value = clampZoom(zoom)
-  if (lightboxZoom.value <= 1) {
-    lightboxPan.value = { x: 0, y: 0 }
-    lightboxPanStart.value = null
-  }
-}
-
-const zoomInLightboxImage = () => {
-  setLightboxZoom(lightboxZoom.value + 0.5)
-}
-
-const zoomOutLightboxImage = () => {
-  setLightboxZoom(lightboxZoom.value - 0.5)
-}
-
-const toggleLightboxZoom = () => {
-  if (lightboxZoom.value > 1) {
-    resetLightboxZoom()
-    return
-  }
-
-  setLightboxZoom(2)
-}
-
-const handleLightboxWheel = (event: WheelEvent) => {
-  if (event.deltaY < 0) {
-    zoomInLightboxImage()
-    return
-  }
-
-  zoomOutLightboxImage()
-}
-
-const startLightboxPan = (event: PointerEvent) => {
-  if (lightboxZoom.value <= 1) return
-  if (event.pointerType === 'mouse' && event.button !== 0) return
-
-  event.preventDefault()
-  const target = event.currentTarget as HTMLElement
-  target.setPointerCapture?.(event.pointerId)
-  lightboxPanStart.value = {
-    pointerId: event.pointerId,
-    x: event.clientX,
-    y: event.clientY,
-    originX: lightboxPan.value.x,
-    originY: lightboxPan.value.y,
-  }
-}
-
-const moveLightboxPan = (event: PointerEvent) => {
-  const start = lightboxPanStart.value
-  if (!start || start.pointerId !== event.pointerId || lightboxZoom.value <= 1) return
-
-  event.preventDefault()
-  lightboxPan.value = {
-    x: start.originX + event.clientX - start.x,
-    y: start.originY + event.clientY - start.y,
-  }
-}
-
-const endLightboxPan = (event: PointerEvent) => {
-  const start = lightboxPanStart.value
-  if (start?.pointerId === event.pointerId) {
-    const target = event.currentTarget as HTMLElement
-    target.releasePointerCapture?.(event.pointerId)
-    lightboxPanStart.value = null
-  }
-}
 
 const showPrevious = () => {
   const length = orderedImages.value.length
@@ -397,7 +260,6 @@ const showNext = () => {
 const openLightbox = (index: number) => {
   if (!orderedImages.value[index]) return
   lightboxIndex.value = index
-  resetLightboxZoom()
   isLightboxOpen.value = true
 }
 
@@ -489,15 +351,6 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
   if (event.key === 'ArrowRight') {
     showNextLightbox()
-  }
-  if (event.key === '+' || event.key === '=') {
-    zoomInLightboxImage()
-  }
-  if (event.key === '-') {
-    zoomOutLightboxImage()
-  }
-  if (event.key === '0') {
-    resetLightboxZoom()
   }
 }
 
