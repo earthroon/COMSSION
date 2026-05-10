@@ -1226,7 +1226,14 @@ html.is-gallery-open body {
   pointer-events: none;
 }
 
-.vehicle-gallery__image-button:hover .vehicle-gallery__zoom-hint,
+@media (hover: hover) and (pointer: fine) {
+  .vehicle-gallery__image-button:hover .vehicle-gallery__zoom-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vehicle-gallery__image-button:active .vehicle-gallery__zoom-hint,
 .vehicle-gallery__image-button:focus-visible .vehicle-gallery__zoom-hint {
   opacity: 1;
   transform: translateY(0);
@@ -1389,8 +1396,8 @@ html.is-gallery-open body {
     min-height: 30px;
     background: rgba(11, 34, 69, 0.78);
     font-size: 0.78rem;
-    opacity: 1;
-    transform: none;
+    opacity: 0;
+    transform: translateY(4px);
   }
 
   .vehicle-lightbox {
